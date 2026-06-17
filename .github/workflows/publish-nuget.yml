@@ -1,0 +1,48 @@
+name: Publish NuGet package
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  DOTNET_VERSION: 8.0.x
+  NUGET_SOURCE_URL: https://nuget.pkg.github.com/dfe-analytical-services/index.json
+
+jobs:
+  pack-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Pack
+        run: |
+          dotnet pack \
+            --configuration Release \
+            --no-restore \
+            --output ./artifacts \
+            -p:PackageReleaseNotes="${{ steps.release_notes.outputs.notes }}"
+
+      - name: Push to GitHub Packages
+        env:
+          API_KEY: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --source "${{ env.NUGET_SOURCE_URL }}" \
+            --api-key "$API_KEY" \
+            --skip-duplicate
