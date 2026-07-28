@@ -2,7 +2,7 @@
 
 Shared .NET packages for use across [Explore Education Statistics (EES)](https://github.com/dfe-analytical-services/explore-education-statistics) projects, maintained by the Department for Education's analytical services team.
 
-Packages in this repository target **.NET 8** and are published to [GitHub Packages](https://github.com/orgs/dfe-analytical-services/packages?repo_name=ees-common) whenever changes are merged into `main`.
+Packages in this repository target **.NET 10** and are published to [GitHub Packages](https://github.com/orgs/dfe-analytical-services/packages?repo_name=ees-common) whenever changes are merged into `main`.
 
 ## Packages
 
@@ -147,7 +147,8 @@ Named parameters (e.g. `$name`) are deliberately disabled by this package becaus
 
 ### Requirements
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- 
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
 ### Building
 
