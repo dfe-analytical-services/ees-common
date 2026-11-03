@@ -43,7 +43,7 @@ public class DuckDbDapperSqlBuilder : DuckDbSqlBuilder, IDapperSqlBuilder
         IDbConnection connection,
         InterpolatedSqlBuilderOptions? options,
         StringBuilder? format,
-        List<InterpolatedSqlParameter>? arguments
+        IEnumerable<InterpolatedSqlParameter>? arguments
     )
         : base(options, format, arguments)
     {
@@ -54,6 +54,11 @@ public class DuckDbDapperSqlBuilder : DuckDbSqlBuilder, IDapperSqlBuilder
 
     public IDapperSqlCommand ToDapperSqlCommand()
     {
+        var dictionaryParameters = SqlParameterMapper.DefaultMapper.GetParametersDictionary(
+            _sqlParameters,
+            _explicitParameters,
+            Options
+        );
         var format = _format.ToString();
 
         return new ImmutableDapperCommand(
@@ -61,7 +66,9 @@ public class DuckDbDapperSqlBuilder : DuckDbSqlBuilder, IDapperSqlBuilder
             BuildSql(format, _sqlParameters),
             format,
             _sqlParameters,
-            _explicitParameters
+            _explicitParameters,
+            dictionaryParameters,
+            dictionaryParameters.DynamicParameters
         );
     }
 }
