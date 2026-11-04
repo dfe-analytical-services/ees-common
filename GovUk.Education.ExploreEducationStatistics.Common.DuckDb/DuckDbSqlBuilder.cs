@@ -46,7 +46,7 @@ public class DuckDbSqlBuilder : InterpolatedSqlBuilderBase<DuckDbSqlBuilder, IIn
     protected DuckDbSqlBuilder(
         InterpolatedSqlBuilderOptions? options = null,
         StringBuilder? format = null,
-        List<InterpolatedSqlParameter>? arguments = null
+        IEnumerable<InterpolatedSqlParameter>? arguments = null
     )
         : base(options: options ?? DefaultOptions, format: format, arguments: arguments) { }
 
